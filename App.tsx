@@ -24,7 +24,27 @@ import { ErrorCorrectionLevel, QrProject, QrType } from './src/types';
 
 type Screen = 'projects' | 'types' | 'editor' | 'export';
 
-const colors = ['#101820', '#0B5D56', '#1B4965', '#A31621', '#5B2A86', '#E76F51', '#FFFFFF', '#F6F7F9'];
+const palette = {
+  electricBlue: '#007BFF',
+  charcoal: '#2B2B2B',
+  cloudSilver: '#C9CCD3',
+  neonLime: '#A3FF00',
+  cloudBase: '#F4F7FB',
+  panel: '#FFFFFF',
+  grid: '#E7EBF2',
+  body: '#5F6876',
+};
+
+const colors = [
+  palette.charcoal,
+  palette.electricBlue,
+  '#004EAA',
+  '#00A3FF',
+  palette.neonLime,
+  palette.cloudSilver,
+  '#FFFFFF',
+  '#F4F7FB',
+];
 const sizes = [256, 512, 1024];
 const errorLevels: ErrorCorrectionLevel[] = ['L', 'M', 'Q', 'H'];
 
@@ -174,6 +194,7 @@ export default function App() {
   return (
     <SafeAreaProvider>
       <SafeAreaView style={styles.app} edges={['top', 'left', 'right', 'bottom']}>
+        <BackgroundGraphics />
         <StatusBar style="dark" />
         <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : undefined} style={styles.keyboard}>
         <View style={styles.header}>
@@ -437,32 +458,166 @@ function Segmented({ values, selected, onSelect }: { values: string[]; selected:
   );
 }
 
+function BackgroundGraphics() {
+  return (
+    <View pointerEvents="none" style={styles.backgroundArt}>
+      <View style={styles.cloudLayerOne} />
+      <View style={styles.cloudLayerTwo} />
+      <View style={styles.gridLayer}>
+        {Array.from({ length: 10 }).map((_, index) => (
+          <View key={`v-${index}`} style={[styles.gridLineVertical, { left: `${index * 11}%` }]} />
+        ))}
+        {Array.from({ length: 12 }).map((_, index) => (
+          <View key={`h-${index}`} style={[styles.gridLineHorizontal, { top: `${index * 9}%` }]} />
+        ))}
+      </View>
+      <View style={[styles.neuronNode, styles.nodeA]} />
+      <View style={[styles.neuronNode, styles.nodeB]} />
+      <View style={[styles.neuronNode, styles.nodeC]} />
+      <View style={[styles.neuronLine, styles.neuronLineOne]} />
+      <View style={[styles.neuronLine, styles.neuronLineTwo]} />
+      <View style={styles.sparkOne} />
+      <View style={styles.sparkTwo} />
+    </View>
+  );
+}
+
 const styles = StyleSheet.create({
   app: {
     flex: 1,
-    backgroundColor: '#F4F7F6',
+    backgroundColor: palette.cloudBase,
   },
   keyboard: {
     flex: 1,
+    zIndex: 1,
+  },
+  backgroundArt: {
+    ...StyleSheet.absoluteFill,
+    overflow: 'hidden',
+  },
+  cloudLayerOne: {
+    position: 'absolute',
+    top: 18,
+    right: -70,
+    width: 250,
+    height: 118,
+    borderRadius: 8,
+    backgroundColor: '#FFFFFF',
+    opacity: 0.68,
+    transform: [{ rotate: '-12deg' }],
+  },
+  cloudLayerTwo: {
+    position: 'absolute',
+    top: 116,
+    left: -72,
+    width: 220,
+    height: 92,
+    borderRadius: 8,
+    backgroundColor: palette.cloudSilver,
+    opacity: 0.22,
+    transform: [{ rotate: '10deg' }],
+  },
+  gridLayer: {
+    ...StyleSheet.absoluteFill,
+    opacity: 0.46,
+  },
+  gridLineVertical: {
+    position: 'absolute',
+    top: 0,
+    bottom: 0,
+    width: 1,
+    backgroundColor: palette.grid,
+  },
+  gridLineHorizontal: {
+    position: 'absolute',
+    left: 0,
+    right: 0,
+    height: 1,
+    backgroundColor: palette.grid,
+  },
+  neuronNode: {
+    position: 'absolute',
+    width: 8,
+    height: 8,
+    borderRadius: 4,
+    backgroundColor: palette.electricBlue,
+    shadowColor: palette.electricBlue,
+    shadowOpacity: 0.45,
+    shadowRadius: 10,
+    elevation: 3,
+  },
+  nodeA: {
+    top: 58,
+    right: 118,
+  },
+  nodeB: {
+    top: 104,
+    right: 38,
+  },
+  nodeC: {
+    top: 170,
+    right: 92,
+    backgroundColor: palette.neonLime,
+  },
+  neuronLine: {
+    position: 'absolute',
+    height: 2,
+    borderRadius: 2,
+    backgroundColor: palette.electricBlue,
+    opacity: 0.28,
+  },
+  neuronLineOne: {
+    top: 84,
+    right: 48,
+    width: 92,
+    transform: [{ rotate: '28deg' }],
+  },
+  neuronLineTwo: {
+    top: 138,
+    right: 50,
+    width: 76,
+    transform: [{ rotate: '-44deg' }],
+  },
+  sparkOne: {
+    position: 'absolute',
+    top: 196,
+    right: 28,
+    width: 38,
+    height: 3,
+    borderRadius: 3,
+    backgroundColor: palette.neonLime,
+    transform: [{ rotate: '-24deg' }],
+  },
+  sparkTwo: {
+    position: 'absolute',
+    top: 206,
+    right: 42,
+    width: 22,
+    height: 3,
+    borderRadius: 3,
+    backgroundColor: palette.electricBlue,
+    transform: [{ rotate: '52deg' }],
   },
   header: {
     paddingHorizontal: 20,
-    paddingTop: 12,
-    paddingBottom: 14,
+    paddingTop: 18,
+    paddingBottom: 16,
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
   },
   eyebrow: {
-    color: '#0B5D56',
+    color: palette.electricBlue,
     fontSize: 13,
-    fontWeight: '700',
+    fontWeight: '900',
     textTransform: 'uppercase',
+    fontFamily: Platform.select({ android: 'sans-serif-condensed', default: undefined }),
   },
   title: {
-    color: '#101820',
-    fontSize: 30,
-    fontWeight: '800',
+    color: palette.charcoal,
+    fontSize: 32,
+    fontWeight: '900',
+    fontFamily: Platform.select({ android: 'sans-serif-condensed', default: undefined }),
   },
   tabs: {
     flexDirection: 'row',
@@ -474,20 +629,23 @@ const styles = StyleSheet.create({
     flex: 1,
     borderRadius: 8,
     paddingVertical: 10,
-    backgroundColor: '#E5ECEA',
+    backgroundColor: 'rgba(201, 204, 211, 0.34)',
     alignItems: 'center',
+    borderWidth: 1,
+    borderColor: 'rgba(201, 204, 211, 0.48)',
   },
   activeTab: {
-    backgroundColor: '#101820',
+    backgroundColor: palette.charcoal,
+    borderColor: palette.charcoal,
   },
   tabText: {
-    color: '#4E5B58',
+    color: '#56606D',
     fontSize: 12,
-    fontWeight: '700',
+    fontWeight: '900',
     textTransform: 'capitalize',
   },
   activeTabText: {
-    color: '#FFFFFF',
+    color: palette.neonLime,
   },
   listContent: {
     padding: 16,
@@ -500,55 +658,63 @@ const styles = StyleSheet.create({
     gap: 14,
   },
   emptyPanel: {
-    backgroundColor: '#FFFFFF',
+    backgroundColor: 'rgba(255, 255, 255, 0.92)',
     borderRadius: 8,
     padding: 24,
     gap: 12,
     borderWidth: 1,
-    borderColor: '#DCE4E1',
+    borderColor: 'rgba(0, 123, 255, 0.2)',
+    shadowColor: palette.electricBlue,
+    shadowOpacity: 0.08,
+    shadowRadius: 16,
+    shadowOffset: { width: 0, height: 8 },
+    elevation: 2,
   },
   emptyTitle: {
-    color: '#101820',
+    color: palette.charcoal,
     fontSize: 20,
-    fontWeight: '800',
+    fontWeight: '900',
+    fontFamily: Platform.select({ android: 'sans-serif-condensed', default: undefined }),
   },
   projectRow: {
-    backgroundColor: '#FFFFFF',
+    backgroundColor: 'rgba(255, 255, 255, 0.94)',
     borderRadius: 8,
     padding: 16,
     borderWidth: 1,
-    borderColor: '#DCE4E1',
+    borderColor: 'rgba(201, 204, 211, 0.7)',
     gap: 14,
   },
   projectInfo: {
     gap: 4,
   },
   projectName: {
-    color: '#101820',
+    color: palette.charcoal,
     fontSize: 18,
-    fontWeight: '800',
+    fontWeight: '900',
+    fontFamily: Platform.select({ android: 'sans-serif-condensed', default: undefined }),
   },
   mutedText: {
-    color: '#65726F',
+    color: palette.body,
     fontSize: 14,
     lineHeight: 20,
+    fontFamily: Platform.select({ android: 'Roboto', default: undefined }),
   },
   rowActions: {
     flexDirection: 'row',
     gap: 10,
   },
   typeRow: {
-    backgroundColor: '#FFFFFF',
+    backgroundColor: 'rgba(255, 255, 255, 0.94)',
     borderRadius: 8,
     padding: 16,
     borderWidth: 1,
-    borderColor: '#DCE4E1',
+    borderColor: 'rgba(0, 123, 255, 0.18)',
     gap: 10,
   },
   typeCategory: {
     alignSelf: 'flex-start',
-    color: '#0B5D56',
-    backgroundColor: '#E4F4F0',
+    color: palette.charcoal,
+    backgroundColor: palette.neonLime,
     borderRadius: 8,
     overflow: 'hidden',
     paddingHorizontal: 10,
@@ -557,13 +723,13 @@ const styles = StyleSheet.create({
     fontWeight: '800',
   },
   previewPanel: {
-    backgroundColor: '#FFFFFF',
+    backgroundColor: 'rgba(255, 255, 255, 0.94)',
     borderRadius: 8,
     padding: 18,
     alignItems: 'center',
     gap: 12,
     borderWidth: 1,
-    borderColor: '#DCE4E1',
+    borderColor: 'rgba(0, 123, 255, 0.22)',
   },
   qrShell: {
     width: 260,
@@ -572,49 +738,55 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     borderWidth: 1,
-    borderColor: '#E1E6E4',
+    borderColor: palette.electricBlue,
+    shadowColor: palette.electricBlue,
+    shadowOpacity: 0.14,
+    shadowRadius: 16,
+    shadowOffset: { width: 0, height: 8 },
+    elevation: 3,
   },
   previewHint: {
-    color: '#65726F',
+    color: palette.body,
     textAlign: 'center',
     paddingHorizontal: 20,
   },
   payloadLabel: {
-    color: '#65726F',
+    color: palette.body,
     fontSize: 12,
     lineHeight: 16,
     textAlign: 'center',
   },
   section: {
-    backgroundColor: '#FFFFFF',
+    backgroundColor: 'rgba(255, 255, 255, 0.94)',
     borderRadius: 8,
     padding: 16,
     gap: 12,
     borderWidth: 1,
-    borderColor: '#DCE4E1',
+    borderColor: 'rgba(201, 204, 211, 0.72)',
   },
   sectionTitle: {
-    color: '#101820',
+    color: palette.charcoal,
     fontSize: 17,
-    fontWeight: '800',
+    fontWeight: '900',
+    fontFamily: Platform.select({ android: 'sans-serif-condensed', default: undefined }),
   },
   inputGroup: {
     gap: 6,
   },
   controlLabel: {
-    color: '#34413E',
+    color: palette.charcoal,
     fontSize: 13,
-    fontWeight: '800',
+    fontWeight: '900',
   },
   input: {
     minHeight: 46,
     borderWidth: 1,
-    borderColor: '#CED8D5',
+    borderColor: palette.cloudSilver,
     borderRadius: 8,
     paddingHorizontal: 12,
     paddingVertical: 10,
-    color: '#101820',
-    backgroundColor: '#FAFBFB',
+    color: palette.charcoal,
+    backgroundColor: '#FAFCFF',
   },
   multilineInput: {
     minHeight: 92,
@@ -630,15 +802,15 @@ const styles = StyleSheet.create({
     height: 34,
     borderRadius: 8,
     borderWidth: 1,
-    borderColor: '#B6C2BF',
+    borderColor: palette.cloudSilver,
   },
   selectedSwatch: {
     borderWidth: 3,
-    borderColor: '#101820',
+    borderColor: palette.electricBlue,
   },
   segmented: {
     flexDirection: 'row',
-    backgroundColor: '#E5ECEA',
+    backgroundColor: 'rgba(201, 204, 211, 0.36)',
     borderRadius: 8,
     padding: 4,
     gap: 4,
@@ -651,14 +823,14 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   activeSegment: {
-    backgroundColor: '#FFFFFF',
+    backgroundColor: palette.electricBlue,
   },
   segmentText: {
-    color: '#65726F',
+    color: palette.body,
     fontWeight: '800',
   },
   activeSegmentText: {
-    color: '#101820',
+    color: '#FFFFFF',
   },
   logoRow: {
     flexDirection: 'row',
@@ -670,69 +842,73 @@ const styles = StyleSheet.create({
     width: 48,
     height: 48,
     borderRadius: 8,
-    backgroundColor: '#E5ECEA',
+    backgroundColor: 'rgba(201, 204, 211, 0.42)',
   },
   logoPlaceholder: {
     width: 48,
     height: 48,
     borderRadius: 8,
-    backgroundColor: '#E5ECEA',
+    backgroundColor: 'rgba(201, 204, 211, 0.42)',
     borderWidth: 1,
-    borderColor: '#CED8D5',
+    borderColor: palette.cloudSilver,
   },
   primaryButton: {
-    backgroundColor: '#101820',
+    backgroundColor: palette.charcoal,
     borderRadius: 8,
     paddingHorizontal: 16,
     paddingVertical: 10,
+    borderWidth: 1,
+    borderColor: palette.electricBlue,
   },
   primaryButtonWide: {
-    backgroundColor: '#101820',
+    backgroundColor: palette.charcoal,
     borderRadius: 8,
     paddingVertical: 14,
     alignItems: 'center',
+    borderWidth: 1,
+    borderColor: palette.electricBlue,
   },
   primaryButtonText: {
     color: '#FFFFFF',
-    fontWeight: '800',
+    fontWeight: '900',
   },
   secondaryButton: {
     borderWidth: 1,
-    borderColor: '#101820',
+    borderColor: palette.electricBlue,
     borderRadius: 8,
     paddingHorizontal: 14,
     paddingVertical: 10,
   },
   secondaryButtonWide: {
     borderWidth: 1,
-    borderColor: '#101820',
+    borderColor: palette.electricBlue,
     borderRadius: 8,
     paddingVertical: 14,
     alignItems: 'center',
   },
   secondaryButtonText: {
-    color: '#101820',
-    fontWeight: '800',
+    color: palette.electricBlue,
+    fontWeight: '900',
   },
   smallButton: {
-    backgroundColor: '#E5ECEA',
+    backgroundColor: 'rgba(201, 204, 211, 0.42)',
     borderRadius: 8,
     paddingHorizontal: 12,
     paddingVertical: 9,
   },
   smallButtonText: {
-    color: '#101820',
-    fontWeight: '800',
+    color: palette.charcoal,
+    fontWeight: '900',
   },
   dangerButton: {
-    backgroundColor: '#F8E4E4',
+    backgroundColor: '#FFE9EC',
     borderRadius: 8,
     paddingHorizontal: 12,
     paddingVertical: 9,
   },
   dangerButtonText: {
-    color: '#A31621',
-    fontWeight: '800',
+    color: '#B00020',
+    fontWeight: '900',
   },
   exportGrid: {
     flexDirection: 'row',
@@ -742,7 +918,7 @@ const styles = StyleSheet.create({
     flex: 1,
     minHeight: 72,
     borderRadius: 8,
-    backgroundColor: '#0B5D56',
+    backgroundColor: palette.electricBlue,
     alignItems: 'center',
     justifyContent: 'center',
   },
