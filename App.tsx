@@ -8,7 +8,6 @@ import {
   KeyboardAvoidingView,
   Platform,
   Pressable,
-  SafeAreaView,
   ScrollView,
   StyleSheet,
   Text,
@@ -16,6 +15,7 @@ import {
   View,
 } from 'react-native';
 import QRCode from 'react-native-qrcode-svg';
+import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
 import { exportPngBase64, exportProject } from './src/exporters';
 import { buildQrPayload, validateQrProject } from './src/payloadBuilders';
 import { getQrTypeDefinition, qrTypeDefinitions } from './src/qrTypes';
@@ -172,9 +172,10 @@ export default function App() {
   };
 
   return (
-    <SafeAreaView style={styles.app}>
-      <StatusBar style="dark" />
-      <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : undefined} style={styles.keyboard}>
+    <SafeAreaProvider>
+      <SafeAreaView style={styles.app} edges={['top', 'left', 'right', 'bottom']}>
+        <StatusBar style="dark" />
+        <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : undefined} style={styles.keyboard}>
         <View style={styles.header}>
           <View>
             <Text style={styles.eyebrow}>Static QR Studio</Text>
@@ -359,8 +360,9 @@ export default function App() {
             </Pressable>
           </ScrollView>
         )}
-      </KeyboardAvoidingView>
-    </SafeAreaView>
+        </KeyboardAvoidingView>
+      </SafeAreaView>
+    </SafeAreaProvider>
   );
 }
 
