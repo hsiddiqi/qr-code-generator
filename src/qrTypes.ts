@@ -1,0 +1,147 @@
+import { QrTypeDefinition } from './types';
+
+export const qrTypeDefinitions: QrTypeDefinition[] = [
+  {
+    id: 'url',
+    label: 'Website URL',
+    description: 'Open a website, landing page, or campaign URL.',
+    defaultName: 'Website QR',
+    category: 'Marketing',
+    fields: [{ key: 'url', label: 'URL', placeholder: 'https://example.com', keyboardType: 'url', required: true }],
+  },
+  {
+    id: 'contact',
+    label: 'Contact Card',
+    description: 'Share a vCard with name, phone, email, company, and website.',
+    defaultName: 'Contact QR',
+    category: 'Business',
+    fields: [
+      { key: 'firstName', label: 'First name', placeholder: 'Amina', required: true },
+      { key: 'lastName', label: 'Last name', placeholder: 'Khan' },
+      { key: 'company', label: 'Company', placeholder: 'Northstar Studio' },
+      { key: 'title', label: 'Job title', placeholder: 'Founder' },
+      { key: 'phone', label: 'Phone', placeholder: '+1 555 0100', keyboardType: 'phone-pad' },
+      { key: 'email', label: 'Email', placeholder: 'amina@example.com', keyboardType: 'email-address' },
+      { key: 'website', label: 'Website', placeholder: 'https://example.com', keyboardType: 'url' },
+      { key: 'address', label: 'Address', placeholder: 'Street, city, country', multiline: true },
+    ],
+  },
+  {
+    id: 'wifi',
+    label: 'Wi-Fi',
+    description: 'Let guests join a Wi-Fi network quickly.',
+    defaultName: 'Wi-Fi QR',
+    category: 'Guest access',
+    fields: [
+      { key: 'ssid', label: 'Network name', placeholder: 'Cafe Guest', required: true },
+      { key: 'password', label: 'Password', placeholder: 'Optional for open networks' },
+      { key: 'encryption', label: 'Security', placeholder: 'WPA, WEP, or nopass' },
+    ],
+  },
+  {
+    id: 'menu',
+    label: 'Restaurant Menu',
+    description: 'Link guests to a digital menu.',
+    defaultName: 'Menu QR',
+    category: 'Restaurant',
+    fields: [
+      { key: 'url', label: 'Menu URL', placeholder: 'https://restaurant.com/menu', keyboardType: 'url', required: true },
+      { key: 'table', label: 'Table or location', placeholder: 'Table 12' },
+    ],
+  },
+  {
+    id: 'text',
+    label: 'Plain Text',
+    description: 'Encode short notes, labels, or instructions.',
+    defaultName: 'Text QR',
+    category: 'General',
+    fields: [{ key: 'text', label: 'Text', placeholder: 'Type anything to encode', multiline: true, required: true }],
+  },
+  {
+    id: 'email',
+    label: 'Email',
+    description: 'Open a prepared email draft.',
+    defaultName: 'Email QR',
+    category: 'Communication',
+    fields: [
+      { key: 'email', label: 'Recipient', placeholder: 'hello@example.com', keyboardType: 'email-address', required: true },
+      { key: 'subject', label: 'Subject', placeholder: 'Hello' },
+      { key: 'body', label: 'Body', placeholder: 'Message text', multiline: true },
+    ],
+  },
+  {
+    id: 'phone',
+    label: 'Phone',
+    description: 'Start a phone call.',
+    defaultName: 'Phone QR',
+    category: 'Communication',
+    fields: [{ key: 'phone', label: 'Phone number', placeholder: '+1 555 0100', keyboardType: 'phone-pad', required: true }],
+  },
+  {
+    id: 'sms',
+    label: 'SMS',
+    description: 'Open a prepared text message.',
+    defaultName: 'SMS QR',
+    category: 'Communication',
+    fields: [
+      { key: 'phone', label: 'Phone number', placeholder: '+1 555 0100', keyboardType: 'phone-pad', required: true },
+      { key: 'message', label: 'Message', placeholder: 'Message text', multiline: true },
+    ],
+  },
+  {
+    id: 'event',
+    label: 'Calendar Event',
+    description: 'Create a calendar event from QR scan.',
+    defaultName: 'Event QR',
+    category: 'Events',
+    fields: [
+      { key: 'title', label: 'Title', placeholder: 'Launch party', required: true },
+      { key: 'start', label: 'Start', placeholder: '20260715T180000', required: true },
+      { key: 'end', label: 'End', placeholder: '20260715T210000', required: true },
+      { key: 'location', label: 'Location', placeholder: 'Main hall' },
+      { key: 'description', label: 'Description', placeholder: 'Event notes', multiline: true },
+    ],
+  },
+  {
+    id: 'location',
+    label: 'Location',
+    description: 'Open coordinates or an address in maps.',
+    defaultName: 'Location QR',
+    category: 'Maps',
+    fields: [
+      { key: 'query', label: 'Address or coordinates', placeholder: '24.8607,67.0011 or an address', required: true },
+    ],
+  },
+  {
+    id: 'app',
+    label: 'App Link',
+    description: 'Send users to an app, app store page, or deep link.',
+    defaultName: 'App Link QR',
+    category: 'Apps',
+    fields: [{ key: 'url', label: 'App link', placeholder: 'https://apps.apple.com/...', keyboardType: 'url', required: true }],
+  },
+  {
+    id: 'social',
+    label: 'Social Profile',
+    description: 'Link to a profile or social post.',
+    defaultName: 'Social QR',
+    category: 'Social',
+    fields: [
+      { key: 'platform', label: 'Platform', placeholder: 'Instagram, LinkedIn, TikTok' },
+      { key: 'url', label: 'Profile URL', placeholder: 'https://social.example/profile', keyboardType: 'url', required: true },
+    ],
+  },
+  {
+    id: 'payment',
+    label: 'Payment Link',
+    description: 'Open a hosted checkout, invoice, or payment URL.',
+    defaultName: 'Payment QR',
+    category: 'Payments',
+    fields: [
+      { key: 'url', label: 'Payment URL', placeholder: 'https://pay.example/invoice/123', keyboardType: 'url', required: true },
+      { key: 'amount', label: 'Amount note', placeholder: '49.00 USD' },
+    ],
+  },
+];
+
+export const getQrTypeDefinition = (id: string) => qrTypeDefinitions.find((type) => type.id === id) ?? qrTypeDefinitions[0];
